@@ -8,7 +8,6 @@ namespace AlphaMiner
 
     public class Trace
     {
-
         public Trace()
         {
             this.Quantity = 1;
@@ -39,7 +38,6 @@ namespace AlphaMiner
         }
 
     }
-
 
     public class SimpleEventLog
     {
@@ -207,17 +205,12 @@ namespace AlphaMiner
         public Dictionary<string, ActivityAndRelationships> Next { get; set; }
     }
 
-    // A > B = B segue diretamente A (se A > B)
-    // A -> B = A causa B. Portanto B segue A e A nunca segue B (se A > B e B !> A)
-    // A # B = A nunca segue diretamente B e B nunca segue diretamente A (se A !> B e B !> A)
-    // A || B = A às vezes segue B e B às vezes segue A (se A > B e B > A)
-
     public enum RelationshipType
     {
-        Follow, // >
-        NotFollow, // #
-        ReciprocalFollow, // ||
-        Cause, // -> 
+        Follow, // A > B = B segue diretamente A (se A > B)
+        NotFollow, // A # B = A nunca segue diretamente B e B nunca segue diretamente A (se A !> B e B !> A)
+        ReciprocalFollow, // A || B = A às vezes segue B e B às vezes segue A (se A > B e B > A)
+        Cause, // A -> B = A causa B. Portanto B segue A e A nunca segue B (se A > B e B !> A) 
         None
     }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
 
 namespace AlphaMiner
 {
@@ -8,38 +7,39 @@ namespace AlphaMiner
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Carregando log de eventos");
-
-            var eventLog = MXMLFile.LoadEventLog(@"C:\Dropbox\Documentos\Mestrado\Mineração de Processos\Projeto\Modelos\simulation_logs.mxml");
-            //var eventLog = EventLogManual1(); //aula05.pdf pg 10
+            Console.WriteLine("{0} - Loading event log", DateTime.Now);
+            //var eventLog = MXMLFile.LoadEventLog(@"C:\Dropbox\Documentos\Mestrado\Mineração de Processos\Projeto\Modelos\simulation_logs.mxml");
+            var eventLog = EventLogManual1(); //aula05.pdf pg 10
             //var eventLog = EventLogManual2(); //aula03.pdf pg 33
             //var eventLog = EventLogManual3(); //aula05.pdf L3 pg 17
             //var eventLog = EventLogManual4(); //aula05.pdf L4 pg 17
 
+
             Console.WriteLine();
-            Console.WriteLine("Gerando log de eventos simples");
+            Console.WriteLine("{0} - Building simple event log", DateTime.Now);
             var simpleEventLog = new SimpleEventLog(eventLog);
 
             PrintSimpleEventLog(simpleEventLog);
 
+
             Console.WriteLine();
-            Console.WriteLine("Pesquisando relacoes entre atividades");           
+            Console.WriteLine("{0} Searching relationships between activities", DateTime.Now);
             var listActivities = simpleEventLog.Activities();
             var relashionshipMatrix = simpleEventLog.SearchRelationships();
 
             PrintRelationshipMatrix(relashionshipMatrix, listActivities);
 
+
             Console.WriteLine();
-            Console.WriteLine("Construindo rede de petri"); 
+            Console.WriteLine("{0} Building Petri Net", DateTime.Now); 
             var petriNet = new PetriNet(simpleEventLog);
             var pnDefinition = petriNet.Definition();
 
             PrintPetriNetDefinition(pnDefinition);
 
 
-
             Console.WriteLine();
-            Console.WriteLine("Finalizado");
+            Console.WriteLine("{0} - Done", DateTime.Now);
             Console.ReadKey();
         }
 
@@ -242,11 +242,11 @@ namespace AlphaMiner
 
             }
 
-            Console.WriteLine("Follow [> L1] = {" + sFollow + "}");
+            //Console.WriteLine("Follow [> L1] = {" + sFollow + "}");
             Console.WriteLine("Cause [-> L1] = {" + sCause + "}");
             Console.WriteLine("NotFollow [# L1] = {" + sNotFollow + "}");
             Console.WriteLine("ReciprocalFollow [|| L1] = {" + sReciprocalFollow + "}");
-            Console.WriteLine("None = {" + sNone + "}");
+            //Console.WriteLine("None = {" + sNone + "}");
         }
 
         static void PrintSimpleEventLog(SimpleEventLog simpleEventLog)
