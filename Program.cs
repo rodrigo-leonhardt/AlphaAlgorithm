@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace AlphaMiner
 {
@@ -7,31 +8,51 @@ namespace AlphaMiner
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("{0} - Loading event log", DateTime.Now);
-            //var eventLog = MXMLFile.LoadEventLog(@"C:\Dropbox\Documentos\Mestrado\Mineração de Processos\Projeto\Modelos\simulation_logs.mxml");
-            var eventLog = EventLogManual1(); //aula05.pdf pg 10
+            Console.WriteLine("Inform the path to event log:");
+            var filePath = Console.ReadLine();
+
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("File not found");
+                return;
+            }
+
+
+            Console.WriteLine("Print simple event log? (Y/N)");            
+            var printSimpleEventLog = Console.ReadLine().ToUpper();
+
+            Console.WriteLine("Print relationships between activities? (Y/N)");            
+            var printRelationships = Console.ReadLine().ToUpper();
+
+            Console.WriteLine();
+
+            Console.WriteLine("{0:HH:mm:ss.fff} - Loading event log", DateTime.Now);
+            var eventLog = MXMLFile.LoadEventLog(filePath);
+            //var eventLog = EventLogManual1(); //aula05.pdf pg 10
             //var eventLog = EventLogManual2(); //aula03.pdf pg 33
             //var eventLog = EventLogManual3(); //aula05.pdf L3 pg 17
             //var eventLog = EventLogManual4(); //aula05.pdf L4 pg 17
 
 
             Console.WriteLine();
-            Console.WriteLine("{0} - Building simple event log", DateTime.Now);
+            Console.WriteLine("{0:HH:mm:ss.fff} - Building simple event log", DateTime.Now);
             var simpleEventLog = new SimpleEventLog(eventLog);
 
-            PrintSimpleEventLog(simpleEventLog);
+            if (printSimpleEventLog == "Y")
+              PrintSimpleEventLog(simpleEventLog);
 
 
             Console.WriteLine();
-            Console.WriteLine("{0} Searching relationships between activities", DateTime.Now);
+            Console.WriteLine("{0:HH:mm:ss.fff} - Searching relationships between activities", DateTime.Now);
             var listActivities = simpleEventLog.Activities();
             var relashionshipMatrix = simpleEventLog.SearchRelationships();
 
-            PrintRelationshipMatrix(relashionshipMatrix, listActivities);
+            if (printRelationships == "Y")
+                PrintRelationshipMatrix(relashionshipMatrix, listActivities);
 
 
             Console.WriteLine();
-            Console.WriteLine("{0} Building Petri Net", DateTime.Now); 
+            Console.WriteLine("{0:HH:mm:ss.fff} - Building Petri Net", DateTime.Now); 
             var petriNet = new PetriNet(simpleEventLog);
             var pnDefinition = petriNet.Definition();
 
@@ -39,8 +60,7 @@ namespace AlphaMiner
 
 
             Console.WriteLine();
-            Console.WriteLine("{0} - Done", DateTime.Now);
-            Console.ReadKey();
+            Console.WriteLine("{0:HH:mm:ss.fff} - Done", DateTime.Now);            
         }
 
         static EventLog EventLogManual1()
